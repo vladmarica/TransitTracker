@@ -8,7 +8,6 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -26,6 +25,7 @@ import javax.swing.border.TitledBorder;
 
 import jssc.SerialPort;
 import jssc.SerialPortList;
+import transit.server.SessionWrapper;
 
 public class Window extends JFrame 
 {
@@ -46,7 +46,7 @@ public class Window extends JFrame
 	private JPanel statsPanel;
 	public JLabel lblUpdatesRecieved;
 	public JLabel lblTotalClients;
-	private JButton btnHide;
+	public JList<SessionWrapper> connectionsList;
 	
 	static
 	{
@@ -69,18 +69,6 @@ public class Window extends JFrame
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		//hide/show the server part
-		btnHide = new JButton("");
-		btnHide.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		btnHide.setToolTipText("Collapse Server");
-		btnHide.setIcon(new ImageIcon(Window.class.getResource("/resources/arrow_left_red.png")));
-		btnHide.setBounds(490, 46, 23, 23);
-		contentPane.add(btnHide);
 		
 		portSelectorPanel = new JPanel();
 		portSelectorPanel.setBorder(new TitledBorder(null, "Port", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -218,7 +206,7 @@ public class Window extends JFrame
 		scrollPane.setBounds(10, 22, 165, 338);
 		panel.add(scrollPane);
 		
-		JList<BusData> connectionsList = new JList<BusData>();
+		connectionsList = new JList<SessionWrapper>();
 		connectionsList.setBorder(new LineBorder(new Color(0, 0, 0)));
 		scrollPane.setViewportView(connectionsList);
 	}

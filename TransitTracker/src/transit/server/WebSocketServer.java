@@ -1,8 +1,9 @@
 package transit.server;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import javax.swing.DefaultListModel;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.websocket.api.Session;
@@ -16,11 +17,12 @@ import transit.Main;
 public class WebSocketServer 
 {
 	public Server server;
-	public ArrayList<Session> connections = new ArrayList<>();
+	public DefaultListModel<SessionWrapper> connections;
 	
 	public WebSocketServer()
 	{
 		server = new Server(8080);
+		connections = new DefaultListModel<>();
 		
 		WebSocketHandler wsHandler = new WebSocketHandler() 
 		{
@@ -29,20 +31,31 @@ public class WebSocketServer
                 factory.register(ConnectionHandler.class);
             }
         };
-        
         server.setHandler(wsHandler);
 	}
 	
 	public void onConnect(Session session)
 	{
-    	connections.add(session);
+    	connections.addElement(new SessionWrapper(session));
         System.out.println("Recieved connection from: " + session.getRemoteAddress().getAddress());
         sendInitialDataToClient(session);
 	}
 	
 	public void onDisconnect(Session session)
 	{
-		connections.remove(session);
+		System.out.println("Disconnected client: " + session.getRemoteAddress().getAddress());
+		SessionWrapper wrapper = null;
+		for (int i = 0; i < connections.size(); i++) {
+			SessionWrapper w = connections.get(i);
+			if (w.session == session) {
+				wrapper = w;
+				break;
+			}
+		}
+		
+		if (wrapper != null) {
+			connections.removeElement(wrapper);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -52,14 +65,13 @@ public class WebSocketServer
 		obj.put(data.busID, data.toJSON());
 		
 		try {
-			for (Session session : connections) {
-				session.getRemote().sendString(obj.toJSONString());
+			for (int i = 0; i < connections.size(); i++) {
+				connections.get(i).session.getRemote().sendString(obj.toJSONString());
 			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -33,6 +33,7 @@ public class Main implements SerialPortListener.ValidDataListener
 	
 	public DefaultListModel<BusData> dataModel;
 	
+	
 	public Main()
 	{
 		printPorts();

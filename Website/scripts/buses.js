@@ -3,7 +3,7 @@ var buses = [];
 
 function UpdateTable()
 {
-	var row = document.getElementById("bus ")
+	var row = document.getElementById("bus");
 }
 
 function UpdateBus(data)
