@@ -1,5 +1,6 @@
 package transit;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,7 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -15,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -22,8 +26,6 @@ import javax.swing.border.TitledBorder;
 
 import jssc.SerialPort;
 import jssc.SerialPortList;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 
 public class Window extends JFrame 
 {
@@ -44,6 +46,7 @@ public class Window extends JFrame
 	private JPanel statsPanel;
 	public JLabel lblUpdatesRecieved;
 	public JLabel lblTotalClients;
+	private JButton btnHide;
 	
 	static
 	{
@@ -61,11 +64,23 @@ public class Window extends JFrame
 		setTitle("Transit Tracker");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 790, 479);
+		setBounds(100, 100, 929, 479);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		//hide/show the server part
+		btnHide = new JButton("");
+		btnHide.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnHide.setToolTipText("Collapse Server");
+		btnHide.setIcon(new ImageIcon(Window.class.getResource("/resources/arrow_left_red.png")));
+		btnHide.setBounds(490, 46, 23, 23);
+		contentPane.add(btnHide);
 		
 		portSelectorPanel = new JPanel();
 		portSelectorPanel.setBorder(new TitledBorder(null, "Port", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -184,7 +199,27 @@ public class Window extends JFrame
 		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setBounds(522, 11, 9, 429);
+		separator.setBounds(522, 11, 9, 434);
 		contentPane.add(separator);
+		
+		JPanel serverPanel = new JPanel();
+		serverPanel.setLayout(null);
+		serverPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Server", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		serverPanel.setBounds(527, 11, 386, 434);
+		contentPane.add(serverPanel);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Connections", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBounds(191, 11, 185, 371);
+		serverPanel.add(panel);
+		panel.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane((Component) null);
+		scrollPane.setBounds(10, 22, 165, 338);
+		panel.add(scrollPane);
+		
+		JList<BusData> connectionsList = new JList<BusData>();
+		connectionsList.setBorder(new LineBorder(new Color(0, 0, 0)));
+		scrollPane.setViewportView(connectionsList);
 	}
 }

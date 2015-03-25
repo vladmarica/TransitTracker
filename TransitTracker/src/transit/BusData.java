@@ -2,6 +2,8 @@ package transit;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.json.simple.JSONObject;
+
 public class BusData 
 {
 	public Coordinates coords;
@@ -14,6 +16,15 @@ public class BusData
 	public String toString()
 	{ 
 		return "[Bus " + this.busID + "] [" + sdf.format(this.timeRecieved) + "] "+ this.coords.toString() + " @ " + String.format("%.2f", this.speed) + " km/h";
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject toJSON()
+	{
+		JSONObject obj = new JSONObject();
+		obj.put("id", this.busID);
+		obj.put("coords", this.coords.toString());
+		return obj;
 	}
 	
 	public static BusData parseBusData(String stringData)

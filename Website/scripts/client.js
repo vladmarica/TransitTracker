@@ -12,7 +12,7 @@ function ConnectionFailure() {
 }
 
 socket.onmessage = function(msg) {
-	//alert("Message recieved: " + msg.data);
+	alert("Message recieved: " + msg.data);
 };
 
 socket.onclose = ConnectionFailure;

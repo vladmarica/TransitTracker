@@ -1,4 +1,5 @@
 package transit;
+
 import static jssc.SerialPort.BAUDRATE_9600;
 import static jssc.SerialPort.DATABITS_8;
 import static jssc.SerialPort.PARITY_NONE;
@@ -16,6 +17,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import transit.reciever.SerialPortListener;
+import transit.server.*;
+
 import jssc.SerialPort;
 import jssc.SerialPortList;
 
@@ -24,18 +27,23 @@ public class Main implements SerialPortListener.ValidDataListener
 	public static Main instance;
 	public SerialPort port;
 	public Window window;
+	public WebSocketServer server;
 	public HashMap<Short, BusData> busMap = new HashMap<Short, BusData>();
+	
 	
 	public DefaultListModel<BusData> dataModel;
 	
 	public Main()
 	{
 		printPorts();
-
+		
+		server = new WebSocketServer();
+		server.start();
+		
 		window = new Window();
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
-		
+	
 		dataModel = new DefaultListModel<BusData>();
 		window.dataList.setModel(dataModel);
 		
@@ -44,6 +52,7 @@ public class Main implements SerialPortListener.ValidDataListener
 			JOptionPane.showMessageDialog(null, "No serial ports found!", "Error!", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
+	
 		
 		window.dataList.addMouseListener(new MouseAdapter() {
 
@@ -111,6 +120,8 @@ public class Main implements SerialPortListener.ValidDataListener
 	{
 		BusData busData = BusData.parseBusData(data);
 		busMap.put(busData.busID, busData);
+		server.sendBusUpdate(busData);
+		
 		dataModel.addElement(BusData.parseBusData(data));
 		window.dataList.ensureIndexIsVisible(dataModel.size() - 1);
 		
