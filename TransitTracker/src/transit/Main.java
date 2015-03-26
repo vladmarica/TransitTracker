@@ -30,17 +30,17 @@ public class Main implements SerialPortListener.ValidDataListener
 	public WebSocketServer server;
 	public HashMap<Short, BusData> busMap = new HashMap<Short, BusData>();
 	
-	
 	public DefaultListModel<BusData> dataModel;
-	
 	
 	public Main()
 	{
 		printPorts();
 		
+		//create and start the WebSocket server
 		server = new WebSocketServer();
 		server.start();
 		
+		//create and show the window
 		window = new Window(this);
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
@@ -55,7 +55,6 @@ public class Main implements SerialPortListener.ValidDataListener
 			System.exit(0);
 		}
 	
-		
 		window.dataList.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent evt) {
@@ -88,8 +87,10 @@ public class Main implements SerialPortListener.ValidDataListener
 				port = new SerialPort(portName);
 				port.openPort();
 				port.setParams(BAUDRATE_9600, DATABITS_8, STOPBITS_1, PARITY_NONE);
+				
 				SerialPortListener spl = new SerialPortListener(eventBytes);
 				spl.addValidDataListener(this);
+				
 				port.addEventListener(spl, eventMask);
 				return port.isOpened();
 			}
@@ -145,7 +146,6 @@ public class Main implements SerialPortListener.ValidDataListener
 		
 		System.out.println("Found " + portNames.length + " COM ports: " + ports);
 	}
-	
 	
 	public static void main(String[] args) 
 	{

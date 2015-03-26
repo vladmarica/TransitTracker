@@ -28,6 +28,9 @@ import javax.swing.event.ListDataListener;
 
 import jssc.SerialPort;
 import jssc.SerialPortList;
+import transit.reciever.Statistics;
+import transit.reciever.Statistics.Stat;
+import transit.reciever.Statistics.StatListener;
 import transit.server.SessionWrapper;
 
 public class Window extends JFrame 
@@ -216,6 +219,26 @@ public class Window extends JFrame
 		connectionsList = new JList<SessionWrapper>();
 		connectionsList.setBorder(new LineBorder(new Color(0, 0, 0)));
 		scrollPane.setViewportView(connectionsList);
+		
+		//Listener to Total Clients update
+		Statistics.TotalClients.addListener(new StatListener()
+		{
+			public void onStatUpdate(Stat stat)
+			{
+				lblTotalClients.setText("Total Clients: " + stat.getValue());
+			}
+		});
+		
+		
+		//Listener to Updates Recieved update
+		Statistics.UpdatesRecieved.addListener(new StatListener()
+		{
+			public void onStatUpdate(Stat stat)
+			{
+				lblUpdatesRecieved.setText("Updates Recieved: " + stat.getValue());
+			}
+		});
+		
 		
 		main.server.connections.addListDataListener(new ListDataListener()
 		{

@@ -15,6 +15,8 @@ function UpdateTable(data)
 
 	idCell.innerHTML = data.id;
 	updateCell.innerHTML = "0 Seconds Ago";
+
+
 }
 
 function UpdateBus(data)
@@ -35,3 +37,8 @@ function UpdateBus(data)
 
 	UpdateTable(tab);
 }
+
+var interv = setInterval(function()
+{
+	console.log("Update");
+}, 1000);

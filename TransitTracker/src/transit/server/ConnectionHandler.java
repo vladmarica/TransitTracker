@@ -7,6 +7,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 import transit.Main;
+import transit.reciever.Statistics;
 
 @WebSocket
 public class ConnectionHandler 
@@ -33,6 +34,7 @@ public class ConnectionHandler
     @OnWebSocketConnect
     public void onConnect(Session session)
     {
+    	Statistics.TotalClients.incrementValue();
     	server.onConnect(session);
     }
 }

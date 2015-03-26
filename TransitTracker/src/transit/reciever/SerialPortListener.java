@@ -66,6 +66,7 @@ public class SerialPortListener implements SerialPortEventListener
 	public void onCompleteDataStringRecieved(String data)
 	{
 		System.out.println(data);
+		Statistics.UpdatesRecieved.incrementValue();
 		for (ValidDataListener l : this.listeners) {
 			l.onValidDataRecieved(data);
 		}
