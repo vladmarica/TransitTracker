@@ -8,6 +8,7 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -22,6 +23,8 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import jssc.SerialPort;
 import jssc.SerialPortList;
@@ -47,6 +50,7 @@ public class Window extends JFrame
 	public JLabel lblUpdatesRecieved;
 	public JLabel lblTotalClients;
 	public JList<SessionWrapper> connectionsList;
+	public JPanel connectionsPanel;
 	
 	static
 	{
@@ -59,7 +63,7 @@ public class Window extends JFrame
 	}
 	
 	
-	public Window() 
+	public Window(Main main) 
 	{	
 		setTitle("Transit Tracker");
 		setResizable(false);
@@ -69,6 +73,8 @@ public class Window extends JFrame
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
 		
 		portSelectorPanel = new JPanel();
 		portSelectorPanel.setBorder(new TitledBorder(null, "Port", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -103,6 +109,7 @@ public class Window extends JFrame
 			}
 			
 		});
+		
 		portSelectorPanel.add(btnOpenClosePort);
 		
 		cmbSelectPort = new JComboBox<String>();
@@ -196,18 +203,44 @@ public class Window extends JFrame
 		serverPanel.setBounds(527, 11, 386, 434);
 		contentPane.add(serverPanel);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Connections", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(191, 11, 185, 371);
-		serverPanel.add(panel);
-		panel.setLayout(null);
+		connectionsPanel = new JPanel();
+		connectionsPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "0 Connections", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		connectionsPanel.setBounds(191, 11, 185, 371);
+		serverPanel.add(connectionsPanel);
+		connectionsPanel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane((Component) null);
 		scrollPane.setBounds(10, 22, 165, 338);
-		panel.add(scrollPane);
+		connectionsPanel.add(scrollPane);
 		
 		connectionsList = new JList<SessionWrapper>();
 		connectionsList.setBorder(new LineBorder(new Color(0, 0, 0)));
 		scrollPane.setViewportView(connectionsList);
+		
+		main.server.connections.addListDataListener(new ListDataListener()
+		{
+			@Override
+			public void contentsChanged(ListDataEvent e) {
+				update(e);
+			}
+
+			@Override
+			public void intervalAdded(ListDataEvent e) {
+				update(e);
+			}
+
+			@Override
+			public void intervalRemoved(ListDataEvent e) {
+				update(e);
+			}
+			
+			public void update(ListDataEvent e)
+			{
+				@SuppressWarnings("unchecked")
+				int len = ((DefaultListModel<SessionWrapper>)e.getSource()).size();
+				String txt = len + " Connection" + (len != 1 ? "s" : "");
+				connectionsPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), txt, TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			}
+		});
 	}
 }

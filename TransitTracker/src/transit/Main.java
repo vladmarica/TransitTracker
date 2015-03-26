@@ -41,12 +41,13 @@ public class Main implements SerialPortListener.ValidDataListener
 		server = new WebSocketServer();
 		server.start();
 		
-		window = new Window();
+		window = new Window(this);
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 	
 		dataModel = new DefaultListModel<BusData>();
 		window.dataList.setModel(dataModel);
+		window.connectionsList.setModel(server.connections);
 		
 		if (SerialPortList.getPortNames().length == 0) {
 			System.out.println("No serial ports found!");
