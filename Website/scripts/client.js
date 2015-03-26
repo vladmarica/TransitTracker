@@ -12,7 +12,12 @@ function ConnectionFailure() {
 }
 
 socket.onmessage = function(msg) {
-	alert("Message recieved: " + msg.data);
+	var data = JSON.parse(msg.data);
+	for (var key in data) {
+		if (data.hasOwnProperty(key)) {
+			UpdateBus(data[key]);
+		}
+	}
 };
 
 socket.onclose = ConnectionFailure;
