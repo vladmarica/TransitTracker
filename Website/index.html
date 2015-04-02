@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html>
+    <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+
+
 	<title>Fredericton Bus Tracker</title>
     <body>
         <h1>Fredericton Bus Tracker</h1>
         <h3>by Vlad Marica</h3>
         <br>
         <b><p id="statusLabel">Connecting to server...</p></b>
- 		
+ 		   
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXi20azot7i4AjP1B3p4wydRKn7HbquLo"></script>
+
  		<div id="map-canvas" style="height:600px;width:800px"></div>
  		<table id="bus-table" border="1" style="width:300px;position:relative;top:-600px;left:830px">
         	<tr>
         		<th>Bus ID</th>
         		<th>Last Update Time</th>
-        	</tr>
-        	<tr>
-        		<td>1</td>
-        		<td>50 Seconds Ago</td>
         	</tr>
         </table>
        	
@@ -23,7 +26,6 @@
         <script src="scripts/client.js"></script>
         <script src="scripts/map.js"></script>
         <script src="scripts/buses.js"></script>
-
 
     </body>
 </html>

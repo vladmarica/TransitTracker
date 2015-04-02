@@ -23,7 +23,8 @@ public class BusData
 	{
 		JSONObject obj = new JSONObject();
 		obj.put("id", this.busID);
-		obj.put("coords", this.coords.toString());
+		obj.put("degreesNorth", this.coords.toDecimalDegreesNorth());
+		obj.put("degreesWest", this.coords.toDecimalDegreesWest() * -1);
 		return obj;
 	}
 	
@@ -40,7 +41,9 @@ public class BusData
 		int multiplier = 1;
 		if (westData.indexOf(".") == 5) {
 			westData = westData.substring(1);
+			//multiplier = -1;
 		}
+		
 		int degreesW = Integer.parseInt(westData.substring(0, 2)) * multiplier;
 		int minutesW = Integer.parseInt(westData.substring(2, 4));
 		float secondsW = Float.parseFloat(westData.substring(4, westData.length())) * 60;
@@ -73,6 +76,17 @@ public class BusData
 			this.minutesW = minutesW;
 			this.secondsW = secondsW;
 		}
+		
+		public float toDecimalDegreesNorth()
+		{
+			return (float)this.degreesN + (this.minutesN / 60F) + (this.secondsN / 3600F);
+		}
+		
+		public float toDecimalDegreesWest()
+		{
+			return (float)this.degreesW + (this.minutesW / 60F) + (this.secondsW / 3600F);
+		}
+		
 		
 		public String toString()
 		{
