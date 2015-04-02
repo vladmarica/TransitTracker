@@ -10,6 +10,7 @@ public class BusData
 	public float speed;
 	public Date timeRecieved;
 	public short busID;
+	public long updateTime;
 	
 	public static SimpleDateFormat sdf = new SimpleDateFormat("KK:mm:ss a");
 	
@@ -25,7 +26,13 @@ public class BusData
 		obj.put("id", this.busID);
 		obj.put("degreesNorth", this.coords.toDecimalDegreesNorth());
 		obj.put("degreesWest", this.coords.toDecimalDegreesWest() * -1);
+		obj.put("lastUpdateTime", this.getSecondsSinceUpdate());
 		return obj;
+	}
+	
+	public int getSecondsSinceUpdate()
+	{
+		return Math.round((System.currentTimeMillis() - this.updateTime) / 1000F);
 	}
 	
 	public static BusData parseBusData(String stringData)
@@ -56,6 +63,8 @@ public class BusData
 		busData.timeRecieved = new Date();
 		
 		busData.busID = Short.parseShort(data[11].substring(1));
+		busData.updateTime = System.currentTimeMillis();
+		
 		//System.out.println(busData.toString());
 		return busData;
 	}

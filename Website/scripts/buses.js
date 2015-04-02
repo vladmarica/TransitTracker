@@ -32,8 +32,7 @@ function UpdateTable(data)
 	idCell.id = "bus" + data.id + "_id";
 	updateCell.id = "bus" + data.id + "_updatetime";
 
-	//idCell.innerHTML = "<a>" + data.id + "</a>";
-	updateCell.innerHTML = "0 Seconds Ago";
+	updateCell.innerHTML = data.lastUpdateTime + " Seconds Ago";
 
 	if ("interval_id" in data) {
 		clearInterval(data.interval_id);
@@ -52,7 +51,9 @@ function UpdateBus(data)
 	if (buses[data.id] == undefined) {
 		buses[data.id] = tab;
 
-		console.log(data.degreesNorth + ", " + data.degreesWest);
+		//console.log(data.degreesNorth + ", " + data.degreesWest);
+
+
 
 		tab.marker = new google.maps.Marker({
     		position: new google.maps.LatLng(data.degreesNorth, data.degreesWest),
@@ -60,17 +61,16 @@ function UpdateBus(data)
     	});
 
     	tab.marker.setMap(map);
-    	console.log(tab.marker.getIcon());
+    	tab.lastUpdateTime = data.lastUpdateTime
 	}	
 	else {
 		tab = buses[data.id];
 		AnimateMarker(tab.marker, data.degreesNorth, data.degreesWest);
+		tab.lastUpdateTime = 0;
 		//tab.marker.setPosition(new google.maps.LatLng(data.degreesNorth, data.degreesWest));
 	}
 
-	tab.lastUpdateTime = 0;
 	tab.id = data.id;
-
 
 	UpdateTable(tab);
 }

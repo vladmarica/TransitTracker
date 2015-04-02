@@ -17,18 +17,6 @@ function initMap()
 
 window.onload = function()
 {
-	/*
-	var script = document.createElement('script');
-	script.type = 'text/javascript';
-  	script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCXi20azot7i4AjP1B3p4wydRKn7HbquLo&callback=initMap';
-  	document.body.appendChild(script);
-
-  	var script2 = document.createElement('script');
-	script2.type = 'text/javascript';
-  	script2.src = 'scripts/buses.js';
-  	document.body.appendChild(script2);
-  	*/
-
   	initMap();
   	StartSocket();
 }
