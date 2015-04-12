@@ -1,6 +1,15 @@
- button.link 
- { 
- 	background:none;
- 	border:none; 
+button.link 
+{ 
+	background: none;
+ 	border: none; 
  	cursor: pointer;
- }
+}
+
+div.rectangle
+{
+	width: 75px;
+	height: 17px;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+}
