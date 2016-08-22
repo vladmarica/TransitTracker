@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
+
+
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+        <script src="https://use.fontawesome.com/e192119d56.js"></script>
     </head>
 
 
 	<title>Fredericton Bus Tracker</title>
     <body>
-        <h1>Fredericton Bus Tracker</h1>
-        <h3>by Vlad Marica</h3>
+        <div id="header">
+            <h2>Fredericton Transit Tracker <small> by Vlad Marica</small></h2>
+            <button id="github-link" class="btn btn-default" 
+                onclick="window.location.href='https://github.com/Quintinity/TransitTracker'">
+                <i class="fa fa-github fa-lg" aria-hidden="true"></i> View on GitHub
+            </button>
+        </div>
+
         <br>
         <b><p id="statusLabel">Connecting to server...</p></b>
  		   
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXi20azot7i4AjP1B3p4wydRKn7HbquLo"></script>
 
- 		<div id="map-canvas" style="height:600px;width:800px"></div>
- 		<table id="bus-table" border="1" style="position:relative;top:-600px;left:830px">
+ 		<div id="map-canvas" style="margin-left:20px;height:600px;width:800px"></div>
+ 		<table class="table table-condensed" id="bus-table" style="position:relative;top:-600px;left:850px;width:400px">
         	<tr>
         		<th>Bus ID</th>
         		<th>Last Update Time</th>

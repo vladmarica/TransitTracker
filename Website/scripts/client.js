@@ -1,6 +1,6 @@
 function StartSocket()
 {
-	var socket = new WebSocket("ws://142.162.16.83:8080/");
+	var socket = new WebSocket("ws://99.192.118.50:8080/");
 	var statusLabel = document.getElementById("statusLabel");
 
 	socket.onopen = function() {
