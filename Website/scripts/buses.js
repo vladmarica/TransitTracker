@@ -30,13 +30,12 @@ function UpdateTable(data)
 
   		//color cell
   		var colorCell = row.insertCell(2);
-  		var rect = document.createElement("div");
-  		rect.className = "rectangle";
-  		
+  		var rect = document.createElement("div");  		
   		//rect.style = "width:100%;height:10px;background:blue;";
 
   		colorCell.appendChild(rect);
   		rect.style.background = "#" + data.color;
+  		rect.style.height = "22px"
 	}
 
 	var button = idCell.firstChild;

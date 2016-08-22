@@ -9,10 +9,11 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
         <script src="https://use.fontawesome.com/e192119d56.js"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXi20azot7i4AjP1B3p4wydRKn7HbquLo"></script>
     </head>
 
 
-	<title>Fredericton Bus Tracker</title>
+	<title>Fredericton Transit Tracker</title>
     <body>
         <div id="header">
             <h2>Fredericton Transit Tracker <small> by Vlad Marica</small></h2>
@@ -24,17 +25,25 @@
 
         <br>
         <b><p id="statusLabel">Connecting to server...</p></b>
- 		   
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXi20azot7i4AjP1B3p4wydRKn7HbquLo"></script>
 
- 		<div id="map-canvas" style="margin-left:20px;height:600px;width:800px"></div>
- 		<table class="table table-condensed" id="bus-table" style="position:relative;top:-600px;left:850px;width:400px">
-        	<tr>
-        		<th>Bus ID</th>
-        		<th>Last Update Time</th>
-                <th>Color</th>
-        	</tr>
-        </table>
+        <div id="main" style="width:1260px">
+            <div id="left-div">
+         		<div id="map-canvas"></div>
+            </div>
+
+            <div id="right-div">
+                <table class="table table-condensed" id="bus-table" style="">
+                    <tr>
+                        <th>Bus ID</th>
+                        <th>Last Update Time</th>
+                        <th>Color</th>
+                    </tr>
+                </table>
+
+                <br>
+                <p style="text-align:center;font-size:15px">Click on a bus ID in the table above to center it in the map</p>
+            </div>
+        </div>
        	
 		<script src="scripts/util.js"></script>
         <script src="scripts/client.js"></script>
