@@ -1,6 +1,6 @@
 function StartSocket()
 {
-	var socket = new WebSocket("ws://transittracker.ddns.net:8080/");
+	var socket = new WebSocket("ws://hcidev.cs.unb.ca:9999/");
 	var statusLabel = document.getElementById("statusLabel");
 
 	socket.onopen = function() {

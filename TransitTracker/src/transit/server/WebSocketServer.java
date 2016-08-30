@@ -21,7 +21,7 @@ public class WebSocketServer
 	
 	public WebSocketServer()
 	{
-		server = new Server(8080);
+		server = new Server(9999);
 		connections = new DefaultListModel<>();
 		
 		WebSocketHandler wsHandler = new WebSocketHandler() 
