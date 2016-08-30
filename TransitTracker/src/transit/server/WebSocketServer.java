@@ -101,22 +101,25 @@ public class WebSocketServer
 		try {
 			server.start();
 			
-			new Thread(new Runnable()
-			{
-				@Override
-				public void run() {
-					try {
-						server.join();  
-					}
-					catch (Exception e) {
-						e.printStackTrace();
-					}
+			new Thread(() -> {
+				try {
+					server.join();  
 				}
-				
-			});
-			 
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			});	 
 		}
 		catch (Exception  e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void stop() {
+		try {
+			server.stop();
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -26,58 +26,77 @@ public class Main implements SerialPortListener.ValidDataListener
 {
 	public static Main instance;
 	public SerialPort port;
+	public boolean guiEnabled;
 	public Window window;
 	public WebSocketServer server;
 	public HashMap<Short, BusData> busMap = new HashMap<Short, BusData>();
 	
 	public DefaultListModel<BusData> dataModel;
 	
-	public Main()
+	public Main(boolean guiEnabled)
 	{
-		printPorts();
+		this(guiEnabled, null);
+	}
+	
+	public Main(boolean guiEnabled, String portId)
+	{
+		this.guiEnabled = guiEnabled;
 		
 		//create and start the WebSocket server
 		server = new WebSocketServer();
 		server.start();
 		
-		//create and show the window
-		window = new Window(this);
-		window.setLocationRelativeTo(null);
-		window.setVisible(true);
-	
-		dataModel = new DefaultListModel<BusData>();
-		window.dataList.setModel(dataModel);
-		window.connectionsList.setModel(server.connections);
-		
-		if (SerialPortList.getPortNames().length == 0) {
-			System.out.println("No serial ports found!");
-			JOptionPane.showMessageDialog(null, "No serial ports found!", "Error!", JOptionPane.ERROR_MESSAGE);
-			System.exit(0);
-		}
-	
-		window.dataList.addMouseListener(new MouseAdapter() {
-
-			public void mouseClicked(MouseEvent evt) {
-				@SuppressWarnings("unchecked")
-				JList<BusData> list = (JList<BusData>)evt.getSource();
-				if (evt.getClickCount() == 2) {
-					try {
-						BusData data = dataModel.get(list.locationToIndex(evt.getPoint()));
-						String url = "https://www.google.ca/maps/place/" + data.coords.toStringNorth() + "+" + data.coords.toStringWest();
-						url = url.replaceAll("º", "%C2%B0");
-						url = url.replaceAll("\"", "%22");
-						System.out.println(url);
-						
-						URI uri = new URL(url).toURI();
-						Desktop.getDesktop().browse(uri);
-					}
-					catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+		if (this.guiEnabled) {
+			dataModel = new DefaultListModel<BusData>();
+			
+			//create and show the window
+			window = new Window(this);
+			window.setLocationRelativeTo(null);
+			window.setVisible(true);
+			
+			window.dataList.setModel(dataModel);
+			window.connectionsList.setModel(server.connections);
+			
+			if (SerialPortList.getPortNames().length == 0) {
+				System.out.println("No serial ports found!");
+				JOptionPane.showMessageDialog(null, "No serial ports found!", "Error!", JOptionPane.ERROR_MESSAGE);
+				System.exit(0);
 			}
 			
-		});
+			window.dataList.addMouseListener(new MouseAdapter() {
+
+				public void mouseClicked(MouseEvent evt) {
+					@SuppressWarnings("unchecked")
+					JList<BusData> list = (JList<BusData>)evt.getSource();
+					if (evt.getClickCount() == 2) {
+						try {
+							BusData data = dataModel.get(list.locationToIndex(evt.getPoint()));
+							String url = "https://www.google.ca/maps/place/" + data.coords.toStringNorth() + "+" + data.coords.toStringWest();
+							url = url.replaceAll("º", "%C2%B0");
+							url = url.replaceAll("\"", "%22");
+							System.out.println(url);
+							
+							URI uri = new URL(url).toURI();
+							Desktop.getDesktop().browse(uri);
+						}
+						catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				
+			});
+		}
+		else if (portId != null) {
+			boolean success = openPort(portId, SerialPort.MASK_RXCHAR, 50);
+			if (success) {
+				System.out.println("Listening to port " + portId);
+			}
+			else {
+				System.out.println("Failed to open port " + portId);
+				server.stop();
+			}
+		}
 	}
 	
 	public boolean openPort(String portName, int eventMask, int eventBytes) 
@@ -125,13 +144,14 @@ public class Main implements SerialPortListener.ValidDataListener
 		busMap.put(busData.busID, busData);
 		server.sendBusUpdate(busData);
 		
-		dataModel.addElement(BusData.parseBusData(data));
-		window.dataList.ensureIndexIsVisible(dataModel.size() - 1);
-		
-		window.lblUniqueBuses.setText("Unique Buses: " + busMap.keySet().size());
+		if (this.guiEnabled) {
+			dataModel.addElement(BusData.parseBusData(data));
+			window.dataList.ensureIndexIsVisible(dataModel.size() - 1);
+			window.lblUniqueBuses.setText("Unique Buses: " + busMap.keySet().size());
+		}
 	}
 	
-	public void printPorts()
+	public static void printPorts()
 	{
 		String[] portNames = SerialPortList.getPortNames();
 		
@@ -149,6 +169,18 @@ public class Main implements SerialPortListener.ValidDataListener
 	
 	public static void main(String[] args) 
 	{
-		instance = new Main();
+		if (args.length == 0) {
+			instance = new Main(true);
+		}
+		else if (args.length == 1 && args[0].equals("-nogui")) {
+			System.out.println("Please launch like 'java -jar TransitTracker.jar -nogui <port_id>'");
+			printPorts();
+		}
+		else if (args.length == 2 && args[0].equals("-nogui")) {
+			instance = new Main(false, args[1]);
+		}
+		else {
+			System.out.println("Invalid launch options");
+		}
 	}
 }
