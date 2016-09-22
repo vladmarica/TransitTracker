@@ -1,6 +1,3 @@
-# TransitTracker
+# Fredericton Transit Tracker
 
-A website that tracks all the buses in Fredericton, New Brunswick, Canada. Each public transit bus broadcasts its
-position over radio about once a minute. 
-
-See [quintinity.github.io](http://quintinity.github.io/). The tracking server will not run all the time.
+This is a web application which displays the locations of public buses in the city of Fredericton, New Brunswick, Canada. For information on how it works and a live demo, check out [quintinity.github.io](http://quintinity.github.io/). This demo runs 24/7 on a server on the University of New Brunswick campus.
