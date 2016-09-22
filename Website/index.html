@@ -24,11 +24,30 @@
         </div>
 
         <br>
+        <div class="alert alert-danger" role="alert" style="margin-left:20px;width:800px">
+            <i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;
+            <b>The city of Fredericton has changed the format of the GPS data that each bus outputs. 
+            I am in the process of updating the parser to handle this new format. 
+            Until then, it will appear as if none of the buses are moving.</b>
+        </div>
+
+        <br>
         <b><p id="statusLabel">Connecting to server...</p></b>
 
         <div id="main" style="width:1260px">
             <div id="left-div">
          		<div id="map-canvas"></div>
+                
+                <div>
+                    <hr style="margin-left:20px;width:800px">
+                    <p style="margin-left:20px;font-size:22px"><b>How does it work?<b></p>
+                    <p style="margin-left:20px;font-size:15px;width:800px">Most public buses in the city of Fredericton have a GPS unit attached to them. This unit transmits the bus's current information (ID, coordinates, velocity, etc), over radio ever minute. I have set up a radio reciever on the University of New Brunswick campus which listens for these radio signals and sends them to a server machine where they are parsed.
+                    <br>
+                    <br>
+                    By viewing this website, you are connecting to this server machine through websockets. The server sends your browser the parsed bus data, which is used to place markers on the map above.
+                    </p>
+                </div>
+
             </div>
 
             <div id="right-div">
